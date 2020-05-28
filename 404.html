@@ -938,7 +938,7 @@
           repo: 'alfredch3n.github.io',
           owner: 'AlfredCh3n',
           admin: ['AlfredCh3n'],
-          id: location.pathname,
+          id: md5(location.pathname),
           distractionFreeMode: 'true'
         })
         gitalk.render('gitalk-container')
