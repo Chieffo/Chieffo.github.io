@@ -79,14 +79,20 @@
 
 
 
-<meta name="description" content="生活是苦难的，我又划着我的断浆出发了。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Alfred&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="在我们目前的前端项目中，有大量的图表数据需要展示，为了更方便地使用以及代码的复用，于是基于 ECharts 封装了各种各样的图表组件。直接使用封装好的组件对于刚接触我们项目的人来说会比较友好，而理解组件的封装思路和封装细节，将会有助于我们更加娴熟地运用组件到实践中。本文将会以雷达图为案例，一步步讲解在 Vue 项目中如何使用 ECharts，如何将其封装为能重复调用的组件。  准备工作在开始之前">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录一次 ECharts 组件封装过程">
+<meta property="og:url" content="http://yoursite.com/2020/05/29/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%20ECharts%20%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="Alfred&#39;s Blog">
-<meta property="og:description" content="生活是苦难的，我又划着我的断浆出发了。">
+<meta property="og:description" content="在我们目前的前端项目中，有大量的图表数据需要展示，为了更方便地使用以及代码的复用，于是基于 ECharts 封装了各种各样的图表组件。直接使用封装好的组件对于刚接触我们项目的人来说会比较友好，而理解组件的封装思路和封装细节，将会有助于我们更加娴熟地运用组件到实践中。本文将会以雷达图为案例，一步步讲解在 Vue 项目中如何使用 ECharts，如何将其封装为能重复调用的组件。  准备工作在开始之前">
+<meta property="og:image" content="http://172.23.1.21/wp-content/uploads/2019/09/image-1569747424046.png">
+<meta property="og:image" content="http://172.23.1.21/wp-content/uploads/2019/09/image-1569750744083.png">
+<meta property="og:image" content="http://172.23.1.21/wp-content/uploads/2019/09/image-1569753173639.png">
+<meta property="article:published_time" content="2020-05-29T02:41:51.473Z">
+<meta property="article:modified_time" content="2020-05-29T02:43:55.927Z">
 <meta property="article:author" content="Alfred Chen">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://172.23.1.21/wp-content/uploads/2019/09/image-1569747424046.png">
 
 
 
@@ -116,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/05/29/记录一次 ECharts 组件封装过程/"/>
 
 
 
 
 
-  <title>Alfred's Blog</title>
+  <title>记录一次 ECharts 组件封装过程 | Alfred's Blog</title>
   
 
 
@@ -141,8 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -215,9 +220,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -247,9 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/29/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%20ECharts%20%E7%BB%84%E4%BB%B6%E5%B0%81%E8%A3%85%E8%BF%87%E7%A8%8B/" itemprop="url">记录一次 ECharts 组件封装过程</a></h1>
+          <h1 class="post-title" itemprop="name headline">记录一次 ECharts 组件封装过程</h1>
         
 
         <div class="post-meta">
@@ -299,9 +302,7 @@
       
 
       
-        
-          
-            <blockquote>
+        <blockquote>
 <p>在我们目前的前端项目中，有大量的图表数据需要展示，为了更方便地使用以及代码的复用，于是基于 ECharts 封装了各种各样的图表组件。直接使用封装好的组件对于刚接触我们项目的人来说会比较友好，而理解组件的封装思路和封装细节，将会有助于我们更加娴熟地运用组件到实践中。本文将会以雷达图为案例，一步步讲解在 Vue 项目中如何使用 ECharts，如何将其封装为能重复调用的组件。</p>
 </blockquote>
 <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>在开始之前，我们先按照正常的组件注册流程，在项目 components 目录中新建一个名为 radar-chart 的组件，然后在一个 Demo 页面引入该组件使用。</p>
@@ -345,8 +346,6 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// radar-chart.vue （子组件）</span></span><br><span class="line"></span><br><span class="line">    watch: &#123;</span><br><span class="line">        legendData() &#123;</span><br><span class="line">            <span class="keyword">this</span>.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.ready();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
 <p>4.添加窗口 resize 事件和图表 click 事件</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// radar-chart.vue （子组件）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">	    <span class="keyword">return</span> &#123;</span><br><span class="line">            chartResizeTimer: <span class="literal">null</span>, <span class="comment">// 定时器，用于resize事件函数节流</span></span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;,</span><br><span class="line">	methods: &#123;</span><br><span class="line">		ready() &#123;</span><br><span class="line">            <span class="comment">// 添加窗口resize事件</span></span><br><span class="line">            <span class="built_in">window</span>.addEventListener(<span class="string">'resize'</span>, vm.handleChartResize);</span><br><span class="line">			</span><br><span class="line">            <span class="comment">// 触发父组件的 @chartClick 事件</span></span><br><span class="line">            vm.myChart.on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">param</span>) </span>&#123;</span><br><span class="line">                vm.$emit(<span class="string">'chartClick'</span>, param);</span><br><span class="line">            &#125;);</span><br><span class="line">		&#125;,</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 处理窗口resize事件</span></span><br><span class="line">        handleChartResize() &#123;</span><br><span class="line">            <span class="keyword">let</span> vm = <span class="keyword">this</span>;</span><br><span class="line">            clearTimeout(vm.chartResizeTimer);</span><br><span class="line">            vm.chartResizeTimer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                vm.myChart &amp;&amp; vm.myChart.resize();</span><br><span class="line">            &#125;, <span class="number">200</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    beforeDestroy() &#123;</span><br><span class="line">        <span class="comment">// 释放该图例资源，较少页面卡顿情况</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.myChart) <span class="keyword">this</span>.myChart.clear();</span><br><span class="line">        <span class="comment">// 移除窗口resize事件</span></span><br><span class="line">        <span class="built_in">window</span>.removeEventListener(<span class="string">'resize'</span>, <span class="keyword">this</span>.handleChartResize);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          
-        
       
     </div>
     
@@ -363,152 +362,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/27/JavaScript%20%E4%B8%AD%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Alfred Chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/profile.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alfred's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/27/JavaScript%20%E4%B8%AD%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" itemprop="url">JavaScript 中的两种数据类型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-27T10:24:35+08:00">
-                2020-05-27
-              </time>
+              <a href="/2020/05/27/JavaScript%20%E4%B8%AD%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" rel="next" title="JavaScript 中的两种数据类型">
+                <i class="fa fa-chevron-left"></i> JavaScript 中的两种数据类型
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>我们知道，JavaScript 是一门弱类型的语言，它创建的变量保存的值是可以在脚本生命周期内改变的，假如初始化定义的变量值为数字（<code>var a = 1;</code>），然后进行改变它的值的操作（<code>a = a + &#39;个&#39;;</code>），这个变量值就会转换为字符串类型（<code>alert(a); // &quot;1个&quot;</code>）。实际上，JavaScript 的变量实际复杂程度还远不止如此。</p>
-<h1 id="基本类型和引用类型"><a href="#基本类型和引用类型" class="headerlink" title="基本类型和引用类型"></a>基本类型和引用类型</h1><p>一个变量可以存放两种类型的值，基本类型的值（primitive values）和引用类型的值（reference values）。基本类型值指的是简单的数据段，而引用类型值指那些可能由多个值构成的对象。</p>
-<p>JavaScript 中共有 6 种基本数据类型：Undefined、Null、Boolean、Number、String、Symbol (new in ES 6) ！</p>
-<p><strong>基本类型</strong>的几个特点：<br>1.基本类型的值是不可变的；<br>2.基本类型的比较是值的比较；<br>3.基本类型的变量是存放在栈区的（栈区指内存里的栈内存）。</p>
-<p>除了上面的 6 种基本数据类型外，剩下的就是引用类型了，统称为 Object 类型。细分的话，有：Object 类型、Array 类型、Date 类型、RegExp 类型、Function 类型 等。</p>
-<p><strong>引用类型</strong>的几个特点：<br>1.引用类型的值是可变的；<br>2.引用类型的值是同时保存在栈内存和堆内存中的对象；<br>3.引用类型的比较是引用的比较。</p>
-<p>进一步了解基本类型和引用类型，参见文末的参考文章。</p>
-<h1 id="对引用类型不同的拷贝方式"><a href="#对引用类型不同的拷贝方式" class="headerlink" title="对引用类型不同的拷贝方式"></a>对引用类型不同的拷贝方式</h1><p>基于以上对 JavaScript 的两种不同数据类型的理解，我们知道，对一个保存了基本类型值的变量和一个保存了引用类型值的变量，它们的赋值、拷贝和类型检测等操作是不一样的，而导致这种差异的原因，归根结底，是因为它们在内存中储存的方式不一样。基本类型的值是保存在内存的栈区中，引用类型的值是由内存中的栈区和堆区共同完成保存，栈区保存的是堆内存的地址或者说指向堆内存中的对象的指针，堆内存中的对象才是引用类型的实际值。</p>
-<h2 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h2><p>实际上，基本类型值的拷贝，并不涉及到浅拷贝与深拷贝，因为对它的拷贝是在内存中新开辟一段栈内存，变量之间互不影响。引用类型值的拷贝则不一样，在栈内存中，两个变量都保存了同一个对象地址，则这两个变量指向了同一个堆内存中的对象。因此，改变其中任何一个变量，都会相互影响。我们把这两种类型的值的拷贝放在这里比较：<br><strong>基本类型值</strong>的拷贝</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num1 = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">var</span> num2 = num1;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/%E6%A0%88%E5%86%85%E5%AD%98.jpg" alt=""><br><strong>引用类型值</strong>的拷贝</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = <span class="keyword">new</span> Objuect();</span><br><span class="line"><span class="keyword">var</span> obj2 = obj1;</span><br><span class="line">obj1.name = <span class="string">"Nicholas"</span>;</span><br><span class="line">alert (obj2.name);	<span class="comment">// "Nicholas"</span></span><br></pre></td></tr></table></figure>
-<p><img src="/images/%E5%A0%86%E5%86%85%E5%AD%98.jpg" alt=""></p>
-<h2 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h2><p>拷贝一个引用类型的值，除了单纯地拷贝它的引用（栈内存地址），有没有办法拷贝它真实的值（堆内存中的对象）呢？其实办法有很多种，并且针对不同的引用类型的值也有不同的深拷贝方法，以下是常用的深拷贝方法：</p>
-<p>第一种：for循环实现对象的深拷贝</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果包含属性值是数组，无法深层拷贝数组里面的数据</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">'jingjing'</span>,</span><br><span class="line">  sex: <span class="string">'girl'</span>,</span><br><span class="line">  old: <span class="string">'18'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = copyObj(obj)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copyObj</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> res = &#123;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    res[key] = obj[key]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第二种：转换成json再转换成对象实现对象的深拷贝（对象里面不包含函数的情况下使用,注意这种直接粗暴的方法只能拷贝json格式数据对象，函数会丢失）</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">'jingjing'</span>,</span><br><span class="line">  sex: <span class="string">'girl'</span>,</span><br><span class="line">  old: <span class="string">'18'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(obj))</span><br></pre></td></tr></table></figure>
-<p>第三种：扩展运算符实现对象的深拷贝（随着es6的逐渐推广，此招儿推荐使用）</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果包含的属性值是数组，无法深层拷贝数组里面的数据</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  name: <span class="string">'jingjing'</span>,</span><br><span class="line">  sex: <span class="string">'girl'</span>,</span><br><span class="line">  old: <span class="string">'18'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> &#123; ...obj2 &#125; = obj</span><br><span class="line">obj.old = <span class="string">'22'</span></span><br><span class="line"><span class="built_in">console</span>.log(obj)  <span class="comment">//&#123;name: "jingjing", sex: "girl", old: "22"&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(obj2) <span class="comment">//&#123;name: "jingjing", sex: "girl", old: "18"&#125;</span></span><br></pre></td></tr></table></figure>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在 JavaScript 中，有两种不同的类型的变量，分别是保存了基本类型的值的变量和保存了引用类型的值的变量，这两种类型的值因为在内存中的储存方式的异同，所以相应的操作也不同。在这篇文章中，我们具体分析了引用类型中对象的拷贝方法，实际应用中用到深拷贝的地方也比较多。希望这篇文章对您有用，文中如有不当之处，敬请指出。<br>参考文章：<br><a href="https://segmentfault.com/a/1190000006752076" target="_blank" rel="noopener" title="JavaScript 深入了解基本类型和引用类型的值">JavaScript 深入了解基本类型和引用类型的值</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -518,10 +393,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -529,6 +405,14 @@
 
 
           
+
+  
+    <div id="gitalk-container">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -549,8 +433,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -596,6 +489,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化图表"><span class="nav-number">2.</span> <span class="nav-text">初始化图表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提取图表配置属性（重点）"><span class="nav-number">3.</span> <span class="nav-text">提取图表配置属性（重点）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#细节优化与其他注意事项"><span class="nav-number">4.</span> <span class="nav-text">细节优化与其他注意事项</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -736,6 +645,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -776,6 +689,23 @@
 
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="/js/src/md5.min.js"></script>
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'bea60f7ce2bb6468a027',
+          clientSecret: '0c22d72f1905c3cbb4580a74721a4e877999cbfc',
+          repo: 'alfredch3n.github.io',
+          owner: 'AlfredCh3n',
+          admin: ['AlfredCh3n'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')
+       </script>
 
 
 
